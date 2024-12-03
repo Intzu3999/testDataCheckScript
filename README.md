@@ -1,2 +1,1 @@
-# MasterPython
-Learn, enhance, and achieve mastery with Python programming language.
+# Automate redundant test data checking with Playwright, using javascript
