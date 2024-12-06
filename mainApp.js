@@ -1,11 +1,12 @@
+const { readMsisdnListTxt, readMsisdnListCsv } = require('./readMsisdnList');
+const { fetchStatus } = require('./services/apiService');
 
-// Main Execution
 const main = async () => {
     const INPUT_FILE = "msisdn_list.txt";
     const OUTPUT_FILE = "results.json";
   
     try {
-      const msisdnList = await readMsisdnList(INPUT_FILE);
+      const msisdnList = await readMsisdnListCsv(INPUT_FILE);
       const results = [];
   
       for (const msisdn of msisdnList) {

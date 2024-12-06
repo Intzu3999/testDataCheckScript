@@ -1,7 +1,4 @@
 const axios = require("axios");
-const fs = require("fs").promises;
-const { readMsisdnListTxt, readMsisdnListCsv } = require('./readMsisdnList');
-const csv = require('csv-parser');
 require('dotenv').config();
 
 // What is needed
@@ -26,7 +23,7 @@ const HEADERS_DEFAULT = {
   };
 
 // Fetch Status
-const fetchStatus = async (msisdn) => {
+const fetchStatus = async (msisdn, telco) => {
 const results = { msisdn };
 
 try {
@@ -53,3 +50,5 @@ try {
 
   return results;
 };
+
+module.exports = { fetchStatus };
