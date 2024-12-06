@@ -2,11 +2,6 @@ const { readMsisdnListCsv } = require('./utils/readMsisdnList');
 const { fetchStatus } = require('./services/apiServices');
 const fs = require('fs').promises;
 
-// (async () => {
-//   const result = await fetchStatus('60100025891', 'CELCOM');
-//   console.log(result);
-// })();
-
 msisdnfilename = "pnl_msisdn.csv";
 const INPUT_FILE = `./testData/${msisdnfilename}`;
 const OUTPUT_FILE = "./testData/results.json";
