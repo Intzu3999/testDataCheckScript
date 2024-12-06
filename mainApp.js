@@ -1,4 +1,4 @@
-const { readMsisdnListTxt, readMsisdnListCsv } = require('./readMsisdnList');
+const { readMsisdnListTxt, readMsisdnListCsv } = require('./utils/readMsisdnList');
 const { fetchStatus } = require('./services/apiService');
 
 const main = async () => {
