@@ -1,0 +1,15 @@
+{
+  "name": "ngos-test-data-checking-script",
+  "version": "1.0.0",
+  "description": "NGOS - Test Data Checking Script for data verification and validation.",
+  "main": "mainApp.js",
+  "scripts": {
+    "newline": "node mainApp.js",
+    "switch": "node mainApp.js eSIMSwitchActivation",
+    "pnlc": "node mainApp.js PNL-Celcom",
+    "pnld": "node mainApp.js PNL-Digi"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

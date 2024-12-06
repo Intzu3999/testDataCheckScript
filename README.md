@@ -9,6 +9,8 @@
 * npm install dotenv (to use dotenv)
 * npm install csv-parser (read csv file converted from spreadsheet)
 
-### HOW TO RUN ###
+### RUN SCRIPT ###
+
 * node mainApp.js
-* arguments
+* node mainApp.js testDataFileName
+* npm run scriptName

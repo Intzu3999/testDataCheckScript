@@ -1,4 +1,3 @@
-// const { readMsisdnListCsv } = require('./utils/readMsisdnList');
 const { fetchStatus } = require('./services/apiServices');
 const fs = require('fs').promises;
 const fsStream = require('fs');
@@ -15,7 +14,7 @@ const readMsisdnListCsv = (filePath) => {
     fsStream.createReadStream(filePath)
       .pipe(csv()) // Process rows in CSV
       .on('data', (data) => {
-        results.push(data); // Add each row as an object
+        results.push(data); t
       })
       .on('end', () => {
         resolve(results); // Resolve the promise with the results array
