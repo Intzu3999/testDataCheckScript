@@ -1,3 +1,4 @@
 .env
 testData/
 result/
+package.json

@@ -4,6 +4,11 @@ const fs = require('fs').promises;
 const fsStream = require('fs');
 const csv = require("csv-parser");
 
+const msisdnfilename = process.argv[2] || 'eSIMNewLine';
+// const msisdnfilename = "eSIMNewLine"; //hardcoded method
+const INPUT_FILE = `./testData/${msisdnfilename}.csv`;
+const OUTPUT_FILE = `./result/results_${msisdnfilename}.json`;
+
 const readMsisdnListCsv = (filePath) => {
   return new Promise((resolve, reject) => {
     const results = [];
@@ -21,10 +26,6 @@ const readMsisdnListCsv = (filePath) => {
       });
   });
 }; 
-
-const msisdnfilename = "eSIMNewLine";
-const INPUT_FILE = `./testData/${msisdnfilename}.csv`;
-const OUTPUT_FILE = `./testData/results_${msisdnfilename}.json`;
 
 const run = async () => {
   try {
