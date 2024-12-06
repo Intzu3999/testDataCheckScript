@@ -2,7 +2,7 @@
 const { fetchStatus } = require('./services/apiServices');
 const fs = require('fs').promises;
 const fsStream = require('fs');
-const csv = require('csv-parser');
+const csv = require("csv-parser");
 
 const readMsisdnListCsv = (filePath) => {
   return new Promise((resolve, reject) => {
@@ -22,18 +22,20 @@ const readMsisdnListCsv = (filePath) => {
   });
 }; 
 
-msisdnfilename = "pnl_msisdn.csv";
-const INPUT_FILE = `./testData/${msisdnfilename}`;
-const OUTPUT_FILE = "./testData/results.json";
+const msisdnfilename = "eSIMNewLine";
+const INPUT_FILE = `./testData/${msisdnfilename}.csv`;
+const OUTPUT_FILE = `./testData/results_${msisdnfilename}.json`;
 
 const run = async () => {
   try {
     const msisdnList = await readMsisdnListCsv(INPUT_FILE);
     const results = [];
     
-    for (const msisdn of msisdnList) { 
-      console.log(`Processing MSISDN: ${msisdn.msisdn}`);  // Log the msisdn value
-      const result = await fetchStatus(msisdn.msisdn, msisdn.telco); // Use specific properties
+    for (const entry of msisdnList) { 
+      const msisdn = entry.msisdn;
+      const telco = entry.telco;
+      console.log(`Processing MSISDN: ${msisdn} ${telco}`);  
+      const result = await fetchStatus(msisdn, telco); 
       results.push(result);
     }
 

@@ -1,10 +1,6 @@
 const axios = require("axios");
 require('dotenv').config();
 
-// What is needed
-// getSubscriber: SUCCESS
-// getFamilyGroup: FAILED
-
 const BASE_URL = process.env.MOLI_BASE_URL;
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const ACCESS_TOKEN_EXPIRY_TIME = process.env.ACCESS_TOKEN_EXPIRY_TIME;
@@ -22,37 +18,38 @@ const HEADERS_DEFAULT = {
     "Connection": "keep-alive",
   };
 
-// Fetch Status
 const fetchStatus = async (msisdn, telco) => {
-const results = { msisdn };
+const results = { msisdn , telco};
 
 try {
-    // console.log(`Calling getSubscriber: /v1/subscriber?msisdn=${msisdn}&telco=${telco}`);
     const subscriberResponse = await axios.get(`${BASE_URL}/v1/subscriber`, {
       params: { msisdn, telco},
       headers: HEADERS_DEFAULT,
     });
     results.getSubscriber = subscriberResponse.status === 200 ? "SUCCESS" : "FAILED";
     if (results.getSubscriber === "SUCCESS") {
-      console.log(`✅ SUCCESS: getSubscriber ${msisdn}`);
+      console.log(`✅ SUCCESS: getSubscriber ${msisdn} ${telco}`);
+    } else {
+      console.log(`❌ FAILED: getSubscriber ${msisdn} ${telco}`);
     }
   } catch (error) {
-    console.log(`❌ FAILED : getSubscriber ${msisdn}`);
+    console.log(`❌ FAILED : getSubscriber ${msisdn} ${telco}`);
     results.getSubscriber = "FAILED";
   }
 
   try {
-    // console.log(`Calling getFamilyGroup: /v1/getFamilyGroup?msisdn=${msisdn}`);
     const familyGroupResponse = await axios.get(`${BASE_URL}/v1/getFamilyGroup`, {
       params: { msisdn },
       headers: HEADERS_DEFAULT,
     });
     results.getFamilyGroup = familyGroupResponse.status === 200 ? "SUCCESS" : "FAILED";
     if (results.getFamilyGroup === "SUCCESS") {
-      console.log(`✅ SUCCESS: getFamilyGroup ${msisdn}`);
+      console.log(`✅ SUCCESS: getFamilyGroup ${msisdn} ${telco}`);
+    } else {
+      console.log(`❌ FAILED: getFamilyGroup ${msisdn} ${telco}`);
     }
   } catch (error) {
-    console.log(`❌ FAILED : getFamilyGroup ${msisdn}`);
+    console.log(`❌ FAILED : getFamilyGroup ${msisdn} ${telco}`);
     results.getFamilyGroup = "FAILED";
   }
 
