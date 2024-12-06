@@ -27,24 +27,32 @@ const fetchStatus = async (msisdn, telco) => {
 const results = { msisdn };
 
 try {
-    // Call getSubscriber API
+    // console.log(`Calling getSubscriber: /v1/subscriber?msisdn=${msisdn}&telco=${telco}`);
     const subscriberResponse = await axios.get(`${BASE_URL}/v1/subscriber`, {
       params: { msisdn, telco},
       headers: HEADERS_DEFAULT,
     });
     results.getSubscriber = subscriberResponse.status === 200 ? "SUCCESS" : "FAILED";
+    if (results.getSubscriber === "SUCCESS") {
+      console.log(`✅ SUCCESS: getSubscriber ${msisdn}`);
+    }
   } catch (error) {
+    console.log(`❌ FAILED : getSubscriber ${msisdn}`);
     results.getSubscriber = "FAILED";
   }
 
   try {
-    // Call getFamilyGroup API
+    // console.log(`Calling getFamilyGroup: /v1/getFamilyGroup?msisdn=${msisdn}`);
     const familyGroupResponse = await axios.get(`${BASE_URL}/v1/getFamilyGroup`, {
       params: { msisdn },
       headers: HEADERS_DEFAULT,
     });
     results.getFamilyGroup = familyGroupResponse.status === 200 ? "SUCCESS" : "FAILED";
+    if (results.getFamilyGroup === "SUCCESS") {
+      console.log(`✅ SUCCESS: getFamilyGroup ${msisdn}`);
+    }
   } catch (error) {
+    console.log(`❌ FAILED : getFamilyGroup ${msisdn}`);
     results.getFamilyGroup = "FAILED";
   }
 
