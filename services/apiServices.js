@@ -28,12 +28,10 @@ let ACCESS_TOKEN_EXPIRY_TIME = process.env.ACCESS_TOKEN_EXPIRY_TIME;
           "Accept": "*/*",
         },
       });
-  
       ACCESS_TOKEN = response.data.access_token;
       ACCESS_TOKEN_EXPIRY_TIME = currentTime + response.data.expires_in * 1000;
       process.env.ACCESS_TOKEN = ACCESS_TOKEN;
       process.env.ACCESS_TOKEN_EXPIRY_TIME = ACCESS_TOKEN_EXPIRY_TIME;
-  
       return ACCESS_TOKEN;
     } catch (error) {
       console.error("Error fetching access token:", error);
@@ -44,14 +42,11 @@ let ACCESS_TOKEN_EXPIRY_TIME = process.env.ACCESS_TOKEN_EXPIRY_TIME;
 const fetchStatus = async (msisdn, telco) => {
   const results = { msisdn , telco};
 
+  // getSubscriber API Call
   try {
     const token = await getAccessToken();
-    
-    // Construct the full URL for getSubscriber
     const subscriberParams = new URLSearchParams({ msisdn, telco });
-    const subscriberURL = `${BASE_URL}/moli-subscriber/v1/subscriber?${subscriberParams.toString()}`;
-    console.log("getSubscriber Full URL: ", subscriberURL);
-    
+    const subscriberURL = `${BASE_URL}/moli-subscriber/v1/subscriber?${subscriberParams.toString()}`;    
     const subscriberResponse = await axios.get(subscriberURL, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -61,38 +56,38 @@ const fetchStatus = async (msisdn, telco) => {
         "Connection": "keep-alive",
       },
     });
+    console.log(`✅ getSubscriber: ${subscriberResponse.status}`);
+    results.getSubscriber = `✅ ${subscriberResponse.status}`
+  } catch (error) {
+    const statusCode = error.response?.status || "Unknown Status";
+    const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
+    console.error(`❌ getSubscriber: Status - ${statusCode}, Error - ${errorMessage}`);
+    results.getSubscriber = `❌ ${statusCode}`;
+  }
 
-    console.log("✅ Subscriber Response: ", subscriberResponse.data);
-    results.getSubscriber = subscriberResponse.status === 200 ? "✅ SUCCESS" : "❌ FAILED";
-    } catch (error) {
-      console.error("❌ getSubscriber Error: ", error.response?.data || error.message);
-      results.getSubscriber = "❌ FAILED";
-    }
+  // getFamilyGroup API Call
+  try {     
+    const token = await getAccessToken();
+    const familyGroupURL = `${ACCOUNT_BASE_URL}/v1/family-group/${msisdn}`;
+    const familyGroupResponse = await axios.get(familyGroupURL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+      },
+    });
+    console.log(`✅ getFamilyGroup: ${familyGroupResponse.status}`);
+    results.getFamilyGroup = `✅ ${familyGroupResponse.status}`;
+  } catch (error) {
+    const statusCode = error.response?.status || "Unknown Status";
+    const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
+    console.error(`❌ getFamilyGroup: Status - ${statusCode}, Error - ${errorMessage}`);
+    results.getFamilyGroup = `❌ ${statusCode}`;
+  }
 
-
-    try {     
-      // Construct the full URL for getFamilyGroup
-      const familyGroupURL = `${ACCOUNT_BASE_URL}/v1/family-group/${msisdn}`;
-      console.log("getFamilyGroup Full URL: ", familyGroupURL);
-
-      const familyGroupResponse = await axios.get(familyGroupURL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Accept": "*/*",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Connection": "keep-alive",
-        },
-      });
-
-      console.log("✅ Family Group Response: ", familyGroupResponse.data);
-      results.getFamilyGroup = familyGroupResponse.status === 200 ? "✅ SUCCESS" : "❌ FAILED";
-    } catch (error) {
-      console.error("❌ getFamilyGroup Error: ", error.response?.data || error.message);
-      results.getFamilyGroup = "❌ FAILED";
-    }
-
-    return results;
+  return results;
 };
 
 module.exports = { fetchStatus };

@@ -14,7 +14,7 @@ const readMsisdnListCsv = (filePath) => {
     fsStream.createReadStream(filePath)
       .pipe(csv()) // Process rows in CSV
       .on('data', (data) => {
-        results.push(data); t
+        results.push(data); 
       })
       .on('end', () => {
         resolve(results); // Resolve the promise with the results array
@@ -34,7 +34,7 @@ const run = async () => {
     for (const entry of msisdnList) { 
       const msisdn = entry.msisdn;
       const telco = entry.telco;
-      console.log(`Processing MSISDN: ${msisdn} ${telco}`);  
+      console.log(`Processing: ${msisdn} ${telco}`);  
       const result = await fetchStatus(msisdn, telco); 
       results.push(result);
     }
