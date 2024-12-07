@@ -17,11 +17,11 @@ const readMsisdnListCsv = (filePath) => {
         results.push(data); 
       })
       .on('end', () => {
-        resolve(results); // Resolve the promise with the results array
+        resolve(results);  
       })
       .on('error', (err) => {
         console.error("Error reading the file:", err); 
-        reject(err); // Reject the promise on error
+        reject(err); 
       });
   });
 }; 
