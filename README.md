@@ -1,20 +1,21 @@
 # README #
 
-### Setup /  dependency to install ###
+### SETUP ###
 
-* npm
-* node
-* npx
-* npm install axios (to use http methods)
-* npm install dotenv (to use dotenv)
-* npm install csv-parser (read csv file converted from spreadsheet)
+* npm run setup
 
 ### BEFORE RUN SCRIPT ###
 
-* place .csv file in testData folder
+* place .csv file in ./testData folder
+* .csv file is case sensitive. Example:
+
+msisdn,telco
+
+60123456789,CELCOM
+
+601987654321,DIGI
 
 ### RUN SCRIPT ###
 
-* node mainApp.js YourTestDataFileName
+* node mainApp.js YourCsvFileName
 * npm run scriptName
-* result.json is in result folder
