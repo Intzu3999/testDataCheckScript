@@ -36,6 +36,7 @@ const run = async () => {
       const telco = entry.telco;
       console.log(`Processing: ${msisdn} ${telco}`);  
       const result = await fetchStatus(msisdn, telco); 
+      console.log(result);
       results.push(result);
     }
 
