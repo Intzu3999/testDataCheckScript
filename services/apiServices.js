@@ -61,9 +61,6 @@ const fetchApiStatus = async (msisdn, telco, id) => {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive",
       },
     });
     console.log(`✅ getCustomer: ${getCustomerResponse.status}`);
@@ -83,9 +80,6 @@ const fetchApiStatus = async (msisdn, telco, id) => {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive",
       },
     });
     console.log(`✅ getSubscriber: ${subscriberResponse.status}`);
@@ -104,9 +98,6 @@ const fetchApiStatus = async (msisdn, telco, id) => {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive",
       },
     });
     console.log(`✅ getFamilyGroup: ${familyGroupResponse.status}`);
