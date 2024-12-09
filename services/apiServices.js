@@ -39,12 +39,44 @@ let ACCESS_TOKEN_EXPIRY_TIME = process.env.ACCESS_TOKEN_EXPIRY_TIME;
     }
   };
 
-const fetchStatus = async (msisdn, telco) => {
-  const results = { msisdn , telco};
+const fetchApiStatus = async (msisdn, telco, id) => {
+  const results = { msisdn , telco, id};
+
+  let token;
+  try {
+    token = await getAccessToken(); 
+  } catch (error) {
+    console.error("❌ Failed to fetch token:", error.message);
+    results.getCustomerResponse = "❌ Token Error";
+    results.getSubscriber = "❌ Token Error";
+    results.getFamilyGroup = "❌ Token Error";
+    return results; 
+  }
+
+  // getCustomer API Call
+  try {
+    const getCustomerParams = new URLSearchParams({ msisdn });
+    const getCustomerURL = `${BASE_URL}/moli-customer/v3/customer?${getCustomerParams.toString()}`;    
+    const getCustomerResponse = await axios.get(getCustomerURL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+      },
+    });
+    console.log(`✅ getCustomer: ${getCustomerResponse.status}`);
+    results.getCustomerResponse = `✅ ${getCustomerResponse.status}`
+  } catch (error) {
+    const statusCode = error.response?.status || "Unknown Status";
+    const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
+    console.error(`❌ getCustomerResponse: Status - ${statusCode}, Error - ${errorMessage}`);
+    results.getCustomerResponse = `❌ ${statusCode}`;
+  }
 
   // getSubscriber API Call
   try {
-    const token = await getAccessToken();
     const subscriberParams = new URLSearchParams({ msisdn, telco });
     const subscriberURL = `${BASE_URL}/moli-subscriber/v1/subscriber?${subscriberParams.toString()}`;    
     const subscriberResponse = await axios.get(subscriberURL, {
@@ -64,10 +96,9 @@ const fetchStatus = async (msisdn, telco) => {
     console.error(`❌ getSubscriber: Status - ${statusCode}, Error - ${errorMessage}`);
     results.getSubscriber = `❌ ${statusCode}`;
   }
-
+  
   // getFamilyGroup API Call
   try {     
-    const token = await getAccessToken();
     const familyGroupURL = `${ACCOUNT_BASE_URL}/v1/family-group/${msisdn}`;
     const familyGroupResponse = await axios.get(familyGroupURL, {
       headers: {
@@ -90,4 +121,4 @@ const fetchStatus = async (msisdn, telco) => {
   return results;
 };
 
-module.exports = { fetchStatus };
+module.exports = { fetchApiStatus };

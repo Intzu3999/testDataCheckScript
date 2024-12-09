@@ -4,10 +4,10 @@
   "description": "NGOS - Test Data Checking Script for data verification and validation.",
   "main": "mainApp.js",
   "scripts": {
-    "newline": "node mainApp.js",
-    "switch": "node mainApp.js eSIMSwitchActivation",
-    "pnlc": "node mainApp.js PNL-Celcom",
-    "pnld": "node mainApp.js PNL-Digi",
+    "newline": "node run.js",
+    "switch": "node run.js eSIMSwitchActivation",
+    "pnlc": "node run.js PNL-Celcom",
+    "pnld": "node run.js PNL-Digi",
     "setup": "npm install axios dotenv csv-parser"
   },
   "keywords": [],

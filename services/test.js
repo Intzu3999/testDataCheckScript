@@ -1,6 +1,6 @@
-const { fetchStatus } = require('./services/apiServices');
+const { fetchApiStatus } = require('./services/apiServices');
 
 (async () => {
-  const result = await fetchStatus('60100025891', 'CELCOM');
+  const result = await fetchApiStatus('60100025891', 'CELCOM');
   console.log(result);
 })();

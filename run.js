@@ -1,10 +1,10 @@
-const { fetchStatus } = require('./services/apiServices');
+const { fetchApiStatus } = require('./services/apiServices');
 const fs = require('fs').promises;
 const fsStream = require('fs');
 const csv = require("csv-parser");
 
 const msisdnfilename = process.argv[2] || 'eSIMNewLine';
-// const msisdnfilename = "eSIMNewLine"; //hardcoded method
+// const msisdnfilename = "eSIMNewLine"; //hardcoded method. Uncomment to use.
 const INPUT_FILE = `./testData/${msisdnfilename}.csv`;
 const OUTPUT_FILE = `./result/results_${msisdnfilename}.json`;
 
@@ -34,8 +34,10 @@ const run = async () => {
     for (const entry of msisdnList) { 
       const msisdn = entry.msisdn;
       const telco = entry.telco;
+      const id = entry.id;
       console.log(`Processing: ${msisdn} ${telco}`);  
-      const result = await fetchStatus(msisdn, telco); 
+
+      const result = await fetchApiStatus(msisdn, telco, id); 
       results.push(result);
     }
 
