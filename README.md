@@ -3,6 +3,7 @@
 ### SETUP ###
 
 * npm run setup
+* npm run setup
 
 ### BEFORE RUN SCRIPT ###
 
