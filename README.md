@@ -17,5 +17,5 @@ msisdn,telco
 
 ### RUN SCRIPT ###
 
-* node run.js YourCsvFileName
+* node read.js YourCsvFileName
 * npm run scriptName

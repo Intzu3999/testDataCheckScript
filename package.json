@@ -1,13 +1,13 @@
 {
-  "name": "ngos-test-data-checking-script",
+  "name": "ngos-test-data-status-scrapper",
   "version": "1.0.0",
-  "description": "NGOS - Test Data Checking Script for data verification and validation.",
-  "main": "mainApp.js",
+  "description": "Script that Scraps Test Data from CSV File to get it's API Statuses.",
+  "main": "read.js",
   "scripts": {
-    "newline": "node run.js",
-    "switch": "node run.js eSIMSwitchActivation",
-    "pnlc": "node run.js PNL-Celcom",
-    "pnld": "node run.js PNL-Digi",
+    "newline": "node read.js",
+    "switch": "node read.js eSIMSwitch",
+    "pnlc": "node read.js PNL-Celcom",
+    "pnld": "node read.js PNL-Digi",
     "setup": "npm install axios dotenv csv-parser"
   },
   "keywords": [],
