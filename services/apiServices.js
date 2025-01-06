@@ -6,7 +6,7 @@ const BASE_URL = process.env.MOLI_BASE_URL;
 const ACCOUNT_BASE_URL = process.env.ACCOUNT_BASE_URL;
 
 const fetchApiStatus = async (msisdn, telco, id) => {
-  const results = { msisdn , telco, id};
+  const results = { msisdn , telco, id };
 
   let token;
   try {
@@ -19,37 +19,37 @@ const fetchApiStatus = async (msisdn, telco, id) => {
     return results; 
   }
 
-// getValidateSIM API Call
-try {
-  const iccid = "896019210635472956";
-  const storeId = "S0001940641";
-  const ValidateSIMParams = new URLSearchParams({ msisdn, telco, iccid, storeId });
-  const ValidateSIMURL = `${BASE_URL}/moli-sim/v2/sim/validation?${ValidateSIMParams.toString()}`;
-    
-  const ValidateSIMResponse = await axios.get(ValidateSIMURL, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
+  // getValidateSIM API Call
+  try {
+    const iccid = "896019210635472956";
+    const storeId = "S0001940641";
+    const ValidateSIMParams = new URLSearchParams({ msisdn, telco, iccid, storeId });
+    const ValidateSIMURL = `${BASE_URL}/moli-sim/v2/sim/validation?${ValidateSIMParams.toString()}`;
+      
+    const ValidateSIMResponse = await axios.get(ValidateSIMURL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-  const simStatus = ValidateSIMResponse.data.status; // Extract the 'status' field
-  console.log(`✅ ValidateSIM: ${ValidateSIMResponse.status}, simStatus: ${simStatus}`);
+    const simStatus = ValidateSIMResponse.data.status; // Extract the 'status' field
+    console.log(`✅ ValidateSIM: ${ValidateSIMResponse.status}, simStatus: ${simStatus}`);
 
-  results.ValidateSIM = {
-    httpStatus: `✅ ${ValidateSIMResponse.status}`,
-    simStatus: simStatus, 
-  };
-} catch (error) {
-  const statusCode = error.response?.status || "Unknown Status";
-  const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
-  console.error(`❌ ValidateSIM: Status - ${statusCode}, Error - ${errorMessage}`);
+    results.ValidateSIM = {
+      httpStatus: `✅ ${ValidateSIMResponse.status}`,
+      simStatus: simStatus, 
+    };
+  } catch (error) {
+    const statusCode = error.response?.status || "Unknown Status";
+    const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
+    console.error(`❌ ValidateSIM: Status - ${statusCode}, Error - ${errorMessage}`);
 
-  results.ValidateSIM = {
-    httpStatus: `❌ ${statusCode}`,
-    simStatus: "Unknown",
-  };
-}
+    results.ValidateSIM = {
+      httpStatus: `❌ ${statusCode}`,
+      simStatus: "Unknown",
+    };
+  }
 
   // getCustomer API Call
   try {
