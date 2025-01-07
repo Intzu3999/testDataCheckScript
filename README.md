@@ -3,10 +3,10 @@
 ### SETUP ###
 
 * npm run setup
-* npm run setup
 
 ### BEFORE RUN SCRIPT ###
 
+* Create two folders: testData , result
 * place .csv file in ./testData folder
 * .csv file is case sensitive. Example:
 
@@ -18,5 +18,5 @@ msisdn,telco
 
 ### RUN SCRIPT ###
 
-* node read.js YourCsvFileName
+* node read ourCsvFileName
 * npm run scriptName

@@ -53,38 +53,6 @@ const fetchApiStatus = async (msisdn, telco, id) => {
     return results; 
   }
 
-// getValidateSIM API Call
-try {
-  const iccid = "896019210635472956";
-  const storeId = "S0001940641";
-  const ValidateSIMParams = new URLSearchParams({ msisdn, telco, iccid, storeId });
-  const ValidateSIMURL = `${BASE_URL}/moli-sim/v2/sim/validation?${ValidateSIMParams.toString()}`;
-    
-  const ValidateSIMResponse = await axios.get(ValidateSIMURL, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-
-  const simStatus = ValidateSIMResponse.data.status; // Extract the 'status' field
-  console.log(`✅ ValidateSIM: ${ValidateSIMResponse.status}, simStatus: ${simStatus}`);
-
-  results.ValidateSIM = {
-    httpStatus: `✅ ${ValidateSIMResponse.status}`,
-    simStatus: simStatus, 
-  };
-} catch (error) {
-  const statusCode = error.response?.status || "Unknown Status";
-  const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
-  console.error(`❌ ValidateSIM: Status - ${statusCode}, Error - ${errorMessage}`);
-
-  results.ValidateSIM = {
-    httpStatus: `❌ ${statusCode}`,
-    simStatus: "Unknown",
-  };
-}
-
   // getCustomer API Call
   try {
     const getCustomerParams = new URLSearchParams({ msisdn });
@@ -118,21 +86,27 @@ try {
       },
     });
 
+    const subscriberTelco = subscriberResponse.data.telco;
+    const payType = subscriberResponse.data.type;  
+    const isPrincipal = subscriberResponse.data.isPrincipal; 
+    const status = subscriberResponse.data.status; 
     const customerType = subscriberResponse.data.characteristic.customerInfo[0]?.type?.text; 
     const subscriberType = subscriberResponse.data.characteristic.subscriberInfo.subscriberType[0]?.text; 
     const telecomType = subscriberResponse.data.characteristic.subscriberInfo.telecomType[0]?.text; 
 
-    console.log(`✅ getSubscriber: ${subscriberResponse.status}, customerType: ${customerType}, subscriberType: ${subscriberType}, telecomType: ${telecomType}`);
+    console.log(`✅ getSubscriber: ${subscriberResponse.status}, telco: ${subscriberTelco}, payType: ${payType}, isPrincipal: ${isPrincipal}, status: ${status}, customerType: ${customerType}, subscriberType: ${subscriberType}, telecomType: ${telecomType}`);
 
     results.getSubscriber = {
       httpStatus: `✅ ${subscriberResponse.status}`,
+      telco: subscriberTelco || "Null",
+      payType: payType || "Null",  
+      isPrincipal: isPrincipal || "Null", 
+      status: status || "Null", 
       customerType: customerType || "Null", 
       subscriberType: subscriberType || "Null", 
       telecomType: telecomType || "Null", 
     };
 
-    // console.log(`✅ getSubscriber: ${subscriberResponse.status}`);
-    // results.getSubscriber = `✅ ${subscriberResponse.status}`
   } catch (error) {
     const statusCode = error.response?.status || "Unknown Status";
     const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
@@ -157,6 +131,39 @@ try {
     const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
     console.error(`❌ getFamilyGroup: Status - ${statusCode}, Error - ${errorMessage}`);
     results.getFamilyGroup = `❌ ${statusCode}`;
+  }
+
+
+  // getValidateSIM API Call
+  try {
+    const iccid = "896019210635472956";
+    const storeId = "S0001940641";
+    const ValidateSIMParams = new URLSearchParams({ msisdn, telco, iccid, storeId });
+    const ValidateSIMURL = `${BASE_URL}/moli-sim/v2/sim/validation?${ValidateSIMParams.toString()}`;
+      
+    const ValidateSIMResponse = await axios.get(ValidateSIMURL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const simStatus = ValidateSIMResponse.data.status; // Extract the 'status' field
+    console.log(`✅ ValidateSIM: ${ValidateSIMResponse.status}, simStatus: ${simStatus}`);
+
+    results.ValidateSIM = {
+      httpStatus: `✅ ${ValidateSIMResponse.status}`,
+      simStatus: simStatus, 
+    };
+  } catch (error) {
+    const statusCode = error.response?.status || "Unknown Status";
+    const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
+    console.error(`❌ ValidateSIM: Status - ${statusCode}, Error - ${errorMessage}`);
+
+    results.ValidateSIM = {
+      httpStatus: `❌ ${statusCode}`,
+      simStatus: "Unknown",
+    };
   }
 
   return results;
