@@ -19,7 +19,7 @@ const fetchApiStatus = async (msisdn, telco, id) => {
     return results; 
   }
 
-  // getCustomer API Call
+  // getCustomer
   try {
     const getCustomerParams = new URLSearchParams({ msisdn });
     const getCustomerURL = `${BASE_URL}/moli-customer/v3/customer?${getCustomerParams.toString()}`;    
@@ -47,7 +47,7 @@ const fetchApiStatus = async (msisdn, telco, id) => {
     results.getCustomer = `❌ ${statusCode}`;
   }
 
-  // getSubscriber API Call
+  // getSubscriber
   try {
     const subscriberParams = new URLSearchParams({ msisdn, telco });
     const subscriberURL = `${BASE_URL}/moli-subscriber/v1/subscriber?${subscriberParams.toString()}`;    
@@ -90,7 +90,7 @@ const fetchApiStatus = async (msisdn, telco, id) => {
     results.getSubscriber = `❌ ${statusCode}`;
   }
   
-  // getFamilyGroup API Call
+  // getFamilyGroup
   try {     
     const familyGroupURL = `${ACCOUNT_BASE_URL}/v1/family-group/${msisdn}`;
     
@@ -109,37 +109,86 @@ const fetchApiStatus = async (msisdn, telco, id) => {
     results.getFamilyGroup = `❌ ${statusCode}`;
   }
 
-  // getValidateSIM API Call
-  // try {
-  //   const iccid = "896019210635472956";
-  //   const storeId = "S0001940641";
-  //   const ValidateSIMParams = new URLSearchParams({ msisdn, telco, iccid, storeId });
-  //   const ValidateSIMURL = `${BASE_URL}/moli-sim/v2/sim/validation?${ValidateSIMParams.toString()}`;
+  //getAccountStructure
+  try {     
+    const accountStructureURL = `${ACCOUNT_BASE_URL}/moli-account/v1/family-group/${msisdn}`;
+    const AccountStructureResponse = await axios.get(accountStructureURL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log('🛠️ accountStructure Payload:', AccountStructureResponse?.data);
+
+    console.log(`✅ accountStructure: ${AccountStructureResponse.status}`);
+    results.accountStructure = `✅ ${AccountStructureResponse.status}`;
+
+  } catch (error) {
+    const statusCode = error.response?.status || "Unknown Status";
+    const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
+    console.error(`❌ accountStructure: Status - ${statusCode}, Error - ${errorMessage}`);
+    results.accountStructure = `❌ ${statusCode}`;
+  }
+
+  
+  //getAccountStructure-WithID
+  try {     
+    const level = "customer";
+    const idType = "NRIC";
+    const accountStructureParams = new URLSearchParams({ level, idType, msisdn });
+    const accountStructureURL = `${BASE_URL}/moli-account/v2/accounts/structure?${accountStructureParams.toString()}`;
+    console.log(accountStructureURL);
+
+    const AccountStructureResponse = await axios.get(accountStructureURL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log('🛠️ accountStructure Payload:', AccountStructureResponse?.data);
+    console.log(`✅ accountStructure: ${AccountStructureResponse.status}`);
+    results.accountStructure = `✅ ${AccountStructureResponse.status}`;
+
+  } catch (error) {
+    const statusCode = error.response?.status || "Unknown Status";
+    const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
+    console.error(`❌ accountStructure: Status - ${statusCode}, Error - ${errorMessage}`);
+    results.accountStructure = `❌ ${statusCode}`;
+  }
+
+  //getValidateSIM
+  try {
+    const iccid = "896019210635472956";
+    const storeId = "S0001940641";
+    const ValidateSIMParams = new URLSearchParams({ msisdn, telco, iccid, storeId });
+    const ValidateSIMURL = `${BASE_URL}/moli-sim/v2/sim/validation?${ValidateSIMParams.toString()}`;
       
-  //   const ValidateSIMResponse = await axios.get(ValidateSIMURL, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
+    const ValidateSIMResponse = await axios.get(ValidateSIMURL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-  //   const simStatus = ValidateSIMResponse.data.status; // Extract the 'status' field
-  //   console.log(`✅ ValidateSIM: ${ValidateSIMResponse.status}, simStatus: ${simStatus}`);
+    const simStatus = ValidateSIMResponse.data.status;
+    console.log(`✅ ValidateSIM: ${ValidateSIMResponse.status}, simStatus: ${simStatus}`);
 
-  //   results.ValidateSIM = {
-  //     httpStatus: `✅ ${ValidateSIMResponse.status}`,
-  //     simStatus: simStatus, 
-  //   };
-  // } catch (error) {
-  //   const statusCode = error.response?.status || "Unknown Status";
-  //   const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
-  //   console.error(`❌ ValidateSIM: Status - ${statusCode}, Error - ${errorMessage}`);
+    results.ValidateSIM = {
+      httpStatus: `✅ ${ValidateSIMResponse.status}`,
+      simStatus: simStatus, 
+    };
+  } catch (error) {
+    const statusCode = error.response?.status || "Unknown Status";
+    const errorMessage = error.response?.data?.message || error.message || "Unknown Error";
+    console.error(`❌ ValidateSIM: Status - ${statusCode}, Error - ${errorMessage}`);
 
-  //   results.ValidateSIM = {
-  //     httpStatus: `❌ ${statusCode}`,
-  //     simStatus: "Unknown",
-  //   };
-  // }
+    results.ValidateSIM = {
+      httpStatus: `❌ ${statusCode}`,
+      simStatus: "Unknown",
+    };
+  }
 
   return results;
 };
