@@ -1,4 +1,8 @@
-const { fetchApiStatus } = require('./services/apiServices');
+const { fetchAccountStatus } = require('./services/account.js');
+const { fetchCustomerStatus } = require('./services/customer.js');
+const { fetchSimStatus } = require('./services/sim.js');
+const { fetchSubscriberStatus } = require('./services/subscriber.js');
+
 const fs = require('fs').promises;
 const fsStream = require('fs');
 const csv = require("csv-parser");
@@ -35,8 +39,9 @@ const run = async () => {
       const msisdn = entry.msisdn;
       const telco = entry.telco;
       const id = entry.id;
+      console.log("");
       console.log(`Processing: ${telco} ${msisdn}`);  
-      const result = await fetchApiStatus(msisdn, telco, id); 
+      const result = await fetchSimStatus(msisdn, telco, id); 
       results.push(result);
     }
 
