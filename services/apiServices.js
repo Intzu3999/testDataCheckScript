@@ -13,9 +13,6 @@ const fetchApiStatus = async (msisdn, telco, id) => {
     token = await getAccessToken(); 
   } catch (error) {
     console.error("❌ Failed to fetch token:", error.message);
-    results.getCustomerResponse = "❌ Token Error";
-    results.getSubscriber = "❌ Token Error";
-    results.getFamilyGroup = "❌ Token Error";
     return results; 
   }
 
