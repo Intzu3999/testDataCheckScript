@@ -35,7 +35,7 @@ const run = async () => {
       const msisdn = entry.msisdn;
       const telco = entry.telco;
       const id = entry.id;
-      console.log(`Processing: ${msisdn} ${telco}`);  
+      console.log(`Processing: ${telco} ${msisdn}`);  
       const result = await fetchApiStatus(msisdn, telco, id); 
       results.push(result);
     }
