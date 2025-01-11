@@ -2,6 +2,7 @@ const { fetchAccountStatus } = require('./services/account.js');
 const { fetchCustomerStatus } = require('./services/customer.js');
 const { fetchSimStatus } = require('./services/sim.js');
 const { fetchSubscriberStatus } = require('./services/subscriber.js');
+const { fetchAllStatus } = require('./services/allServices.js');
 
 const fs = require('fs').promises;
 const fsStream = require('fs');
@@ -41,7 +42,7 @@ const run = async () => {
       const id = entry.id;
       console.log("");
       console.log(`Processing: ${telco} ${msisdn}`);  
-      const result = await fetchSimStatus(msisdn, telco, id); 
+      const result = await fetchAllStatus(msisdn, telco, id); 
       results.push(result);
     }
 

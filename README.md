@@ -8,6 +8,7 @@
 
 * Create two folders: testData , result
 * place .csv file in ./testData folder
+* msisdn is a REQUIRED param in .csv file. Other param are optional.
 * .csv file is case sensitive. Example:
 
 msisdn,telco
@@ -18,5 +19,5 @@ msisdn,telco
 
 ### RUN SCRIPT ###
 
-* node read ourCsvFileName
+* node read yourCsvFileName
 * npm run scriptName
