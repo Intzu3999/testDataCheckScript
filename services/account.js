@@ -5,7 +5,7 @@ require('dotenv').config();
 const BASE_URL = process.env.MOLI_BASE_URL;
 const ACCOUNT_BASE_URL = process.env.ACCOUNT_BASE_URL;
 
-const fetchAccountStatus = async (msisdn, id) => {
+const accountStatus = async (msisdn, id) => {
   const results = { msisdn, id };
 
   let token;
@@ -88,4 +88,4 @@ const fetchAccountStatus = async (msisdn, id) => {
   return results;
 };
 
-module.exports = { fetchAccountStatus };
+module.exports = { accountStatus };

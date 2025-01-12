@@ -1,29 +1,34 @@
-const { fetchAccountStatus } = require('./services/account.js');
-const { fetchCustomerStatus } = require('./services/customer.js');
-const { fetchSimStatus } = require('./services/sim.js');
-const { fetchSubscriberStatus } = require('./services/subscriber.js');
-const { fetchAllStatus } = require('./services/allServices.js');
+const { accountStatus } = require('./services/account.js');
+const { customerStatus } = require('./services/customer.js');
+const { simStatus } = require('./services/sim.js');
+const { subscriberStatus } = require('./services/subscriber.js');
+const { allStatus } = require('./services/allServices.js');
 
 const fs = require('fs').promises;
 const fsStream = require('fs');
 const csv = require("csv-parser");
 
-const msisdnfilename = process.argv[2] || 'eSIMNewLine';
-// const msisdnfilename = "eSIMNewLine"; //hardcoded method. Uncomment to use.
-const INPUT_FILE = `./testData/${msisdnfilename}.csv`;
-const OUTPUT_FILE = `./result/results_${msisdnfilename}.json`;
+const services = {
+  accountStatus,
+  customerStatus,
+  simStatus,
+  subscriberStatus,
+  allStatus,
+};
 
-const readMsisdnListCsv = (filePath) => {
+const csvFileName = process.argv[2] || 'temp'; //.csv file name from ./testData folder that contains list of msisdn to check
+const runAPI = process.argv[3] || 'fetchSubscriberStatus'; //API services to check: allStatus, accountStatus, customerStatus, simStatus, subscriberStatus, etc
+
+const INPUT_FILE = `./testData/${csvFileName}.csv`;
+const OUTPUT_FILE = `./result/results_${csvFileName}.json`;
+
+const readCsv = (filePath) => {
   return new Promise((resolve, reject) => {
     const results = [];
     fsStream.createReadStream(filePath)
       .pipe(csv()) // Process rows in CSV
-      .on('data', (data) => {
-        results.push(data); 
-      })
-      .on('end', () => {
-        resolve(results);  
-      })
+      .on('data', (data) => results.push(data))
+      .on('end', () => resolve(results))
       .on('error', (err) => {
         console.error("Error reading the file:", err); 
         reject(err); 
@@ -31,18 +36,25 @@ const readMsisdnListCsv = (filePath) => {
   });
 }; 
 
-const run = async () => {
+const processCsv = () => {
+};
+
+const tabulateCsv = () => {
+};
+
+const emailCsv = () => {
+};
+
+const execute = async () => {
   try {
-    const msisdnList = await readMsisdnListCsv(INPUT_FILE);
+    const msisdnList = await readCsv(INPUT_FILE);
     const results = [];
     
     for (const entry of msisdnList) { 
-      const msisdn = entry.msisdn;
-      const telco = entry.telco;
-      const id = entry.id;
+      const { msisdn, telco, id } = entry;
       console.log("");
       console.log(`Processing: ${telco} ${msisdn}`);  
-      const result = await fetchAllStatus(msisdn, telco, id); 
+      const result = await services[runAPI](msisdn, telco, id); 
       results.push(result);
     }
 
@@ -52,5 +64,4 @@ const run = async () => {
     console.error("Error during execution:", error.message);
   }
 };
-
-run();
+execute();
