@@ -1,17 +1,17 @@
 {
-  "name": "ngos-test-data-status-scrapper",
+  "name": "ngos-MSISDN-API-Script",
   "version": "1.0.0",
-  "description": "Script that Scraps Test Data from CSV File to get it's API Statuses.",
+  "description": "Script that reads MSISDN list, processes with MOLI API, and returns test result.",
   "main": "read.js",
   "scripts": {
-    "newline": "node read.js",
-    "switch": "node read.js eSIMSwitch",
-    "pnlc": "node read.js PNL-Celcom",
-    "pnld": "node read.js PNL-Digi",
+    "temp": "node read.js",
+    "esim": "node read.js eSIMSwitch",
+    "celcom": "node read.js sharedCelcom",
+    "digi": "node read.js sharedDigi",
     "setup": "npm install axios dotenv csv-parser"
   },
   "keywords": [],
-  "author": "",
+  "author": "Evelyn Keoy In Tzu",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.7.9",
